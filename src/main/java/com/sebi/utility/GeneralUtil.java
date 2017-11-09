@@ -15,21 +15,27 @@ public class GeneralUtil {
 
     private final static Logger LOG = Logger.getLogger(FileReaderUtil.class);
 
-    public static void writeToCSV(String regNo, String make, String color, String fileName, String fileDirectory, boolean isMultipleRegNum) {
+    public static void writeToCSV(String regNo, String make, String color, String fileName, File folder, boolean isMultipleRegNum) {
 
-        File file = createNewCsvFile(fileName, fileDirectory);
+        File file = new File(folder, fileName + ".csv");
         FileWriter writer;
 
         try {
             Vehicle vehicleEntry = new Vehicle(regNo, make, color);
             List<Vehicle> vehicles = new ArrayList<Vehicle>();
             if (isMultipleRegNum) {
+                if (file.createNewFile()) {
+                    LOG.info(file.getName() + " has been created in " + file.getPath());
+                }
                 writer = new FileWriter(file, true);
                 vehicles.add(vehicleEntry);
                 writeDataToList(vehicles, writer);
                 writer.flush();
                 writer.close();
             } else {
+                if (file.createNewFile()) {
+                    LOG.info(file.getName() + " has been created in " + file.getPath());
+                }
                 writer = new FileWriter(file);
                 vehicles.add(vehicleEntry);
                 writeDataToList(vehicles, writer);
@@ -51,19 +57,6 @@ public class GeneralUtil {
             list.add(vehicle.getColour());
             writeLine(writer, list);
         }
-    }
-
-    private static File createNewCsvFile(String fileName, String dir) {
-        File file = null;
-        try {
-            file = new File(dir + fileName + ".csv");
-            if (file.createNewFile()) {
-                LOG.info(file.getName() + " has been created in " + file.getPath() + " directory");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return file;
     }
 
     private static void writeLine(Writer writer, List<String> values) throws IOException {

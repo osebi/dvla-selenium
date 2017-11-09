@@ -41,6 +41,9 @@ public class AutomatedTest {
     @Test
     public void shouldReturnOneMakeAndColor() {
 
+        String fileName = "test-run-1";
+        File folder = new File("write-to-csv");
+
         componentBean = resolver.resolve(FILE_PATH);
 
         driver.get(Constants.PAGE1_URL);
@@ -66,10 +69,7 @@ public class AutomatedTest {
         assertThat(colour.getText(), is("GREEN"));
         String colourStr = getVehicleColour(colour, regStr);
 
-        String fileName = "test-run-1";
-        String fileDirectory = "/Users/TRIMZBEATZ/Documents/vehicleselenium/";
-
-        GeneralUtil.writeToCSV(reg_num, makeStr, colourStr, fileName, fileDirectory, false);
+        GeneralUtil.writeToCSV(reg_num, makeStr, colourStr, fileName, folder, false);
 
     }
 
@@ -79,7 +79,7 @@ public class AutomatedTest {
         componentBean = resolver.resolve(FILE_PATH);
 
         String fileName = "test-run-2";
-        String fileDirectory = "/Users/TRIMZBEATZ/Documents/vehicleselenium/";
+        File folder = new File("write-to-csv");
 
         for (int i = 0; i < componentBean.getRegNumbers().size(); i++) {
 
@@ -102,7 +102,7 @@ public class AutomatedTest {
             WebElement colour = driver.findElement(By.cssSelector(Constants.VEHICLE_COLOR));
             String colourStr = getVehicleColour(colour, regStr);
 
-            GeneralUtil.writeToCSV(reg_num, makeStr, colourStr, fileName, fileDirectory, true);
+            GeneralUtil.writeToCSV(reg_num, makeStr, colourStr, fileName, folder, true);
 
         }
 
@@ -114,7 +114,6 @@ public class AutomatedTest {
         if (element.isDisplayed()) {
             GeneralUtil.takeScreenShot(driver, dir);
             element.click();
-            threadSleep();
             LOG.info("Opening first page: " + driver.getCurrentUrl());
         } else {
             LOG.info("Element does not exist");
@@ -127,10 +126,8 @@ public class AutomatedTest {
         if (input.isDisplayed() && button.isDisplayed()) {
             input.sendKeys(reg_num);
             GeneralUtil.takeScreenShot(driver, dir_1);
-            threadSleep();
             button.click();
             GeneralUtil.takeScreenShot(driver, dir_2);
-            threadSleep();
             LOG.info("Opening second page: " + driver.getCurrentUrl());
         }
     }

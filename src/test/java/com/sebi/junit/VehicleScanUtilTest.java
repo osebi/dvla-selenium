@@ -35,6 +35,4 @@ public class VehicleScanUtilTest {
         assertThat(componentBean.getRegNumbers().get(0), is(equalTo(REG_NO)));
     }
 
-
-
 }
